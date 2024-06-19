@@ -1,0 +1,226 @@
+{
+    "type": "record",
+    "name": "LendingServicingRepayments",
+    "namespace": "lending.servicing.repayments",
+    "fields": [
+        {
+            "name": "source",
+            "doc": "The source that generated the event: lending-servicing",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        {
+            "name": "id",
+            "doc": "The unique identifier of the event",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        {
+            "name": "specversion",
+            "doc": "The version of the CloudEvents specification",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        {
+            "name": "type",
+            "doc": "The context in which the event happened",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        {
+            "name": "time",
+            "doc": "The time when the event has been published in unix time format",
+            "type": [
+                {
+                    "type": "long",
+                    "logicalType": "timestamp-millis"
+                },
+                "null"
+            ]
+        },
+        {
+            "name": "datacontenttype",
+            "doc": "Content type of data value: application/avro",
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        {
+            "name": "data",
+            "doc": "Data object",
+            "type": {
+                "type": "record",
+                "name": "LendingServicingRepaymentsData",
+                "fields": [
+                    {
+                        "name": "loan",
+                        "doc": "Loan object",
+                        "type": {
+                            "type": "record",
+                            "name": "LendingServicingRepaymentsLoan",
+                            "fields": [
+                                {
+                                    "name": "code",
+                                    "doc": "The loan unique code",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "merchant",
+                        "doc": "The merchant associated with the loan",
+                        "type": {
+                            "type": "record",
+                            "name": "LendingServicingRepaymentsMerchant",
+                            "fields": [
+                                {
+                                    "name": "code",
+                                    "doc": "The merchant unique code",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "offer",
+                        "doc": "The offer data",
+                        "type": {
+                            "type": "record",
+                            "name": "LendingServicingRepaymentsOffer",
+                            "fields": [
+                                {
+                                    "name": "code",
+                                    "doc": "The offer unique code",
+                                    "type": "string"
+                                },
+                                {
+                                    "name": "product_code",
+                                    "doc": "The offer product code. Eg: MCA, ML, SYP",
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "name": "repayment",
+                        "doc": "The repayment data",
+                        "type": {
+                            "type": "record",
+                            "name": "LendingServicingRepaymentsRepayment",
+                            "fields": [
+                                {
+                                    "name": "code",
+                                    "doc": "The repayment unique code",
+                                    "type": "string"
+                                },
+                                {
+                                    "name": "type",
+                                    "doc": "The repayment type",
+                                    "type": {
+                                        "type": "enum",
+                                        "name": "LendingServicingRepaymentsRepaymentRepaymentType",
+                                        "symbols": [
+                                            "unknown",
+                                            "payment_link"
+                                        ],
+                                        "default": "unknown"
+                                    }
+                                },
+                                {
+                                    "name": "reference",
+                                    "doc": "The repayment reference. Eg: https://pay.theta.external.sumup.io/b2c/XV645APK5V",
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                {
+                                    "name": "status",
+                                    "doc": "The repayment status",
+                                    "type": {
+                                        "type": "enum",
+                                        "name": "LendingServicingRepaymentsRepaymentStatus",
+                                        "symbols": [
+                                            "unknown",
+                                            "created",
+                                            "paid",
+                                            "canceled"
+                                        ],
+                                        "default": "unknown"
+                                    }
+                                },
+                                {
+                                    "name": "due_date",
+                                    "doc": "The repayment due date, if it exists",
+                                    "type": [
+                                        {
+                                            "type": "long",
+                                            "logicalType": "timestamp-millis"
+                                        },
+                                        "null"
+                                    ]
+                                },
+                                {
+                                    "name": "amount",
+                                    "doc": "The repayment amount in cents",
+                                    "type": "int"
+                                },
+                                {
+                                    "name": "currency",
+                                    "doc": "The repayment currency",
+                                    "type": {
+                                        "name": "LendingServicingRepaymentsRepaymentCurrency",
+                                        "type": "record",
+                                        "fields": [
+                                            {
+                                                "name": "iso_code",
+                                                "doc": "The currency iso code",
+                                                "type": "string"
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "origin",
+                                    "doc": "The repayment origin",
+                                    "type": {
+                                        "type": "enum",
+                                        "name": "LendingServicingRepaymentsRepaymentOrigin",
+                                        "symbols": [
+                                            "unknown",
+                                            "dashboard",
+                                            "lending_backoffice",
+                                            "main_repayment_method"
+                                        ],
+                                        "default": "unknown"
+                                    }
+                                },
+                                {
+                                    "name": "created_at",
+                                    "doc": "The repayment creation date",
+                                    "type": [
+                                        {
+                                            "type": "long",
+                                            "logicalType": "timestamp-millis"
+                                        },
+                                        "null"
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
