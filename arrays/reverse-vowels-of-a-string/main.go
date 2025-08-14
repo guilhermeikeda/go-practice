@@ -6,51 +6,41 @@ import (
 )
 
 func main() {
-
+	output := reverseVowels("Icream") // acreim
+	fmt.Println(output)
 }
 
 func reverseVowels(s string) string {
-	vowels := getVowels(s)
-	vowels = reverse(vowels)
-	vowelsIndex := 0
+	i := 0
+	j := len(s) - 1
 
-	var result string
-	for _, value := range s {
-		if !isVowel(value) {
-			result = fmt.Sprintf("%s%s", result, string(value))
+	result := make([]byte, len(s))
+
+	for i <= j {
+		if isVowel(s[i]) && isVowel(s[j]) {
+			result[i] = s[j]
+			result[j] = s[i]
+			i++
+			j--
 			continue
 		}
 
-		result = fmt.Sprintf("%s%s", result, string(vowels[vowelsIndex]))
-		vowelsIndex++
-	}
+		if !isVowel(s[i]) {
+			result[i] = s[i]
+			i++
+		}
 
-	return result
-}
-
-func getVowels(input string) []rune {
-	result := []rune{}
-	for _, char := range input {
-		if isVowel(char) {
-			result = append(result, char)
+		if !isVowel(s[j]) {
+			result[j] = s[j]
+			j--
 		}
 	}
 
-	return result
+	return string(result)
 }
 
-func reverse(input []rune) []rune {
-	var result []rune
-
-	for i := len(input) - 1; i >= 0; i-- {
-		result = append(result, input[i])
-	}
-
-	return result
-}
-
-func isVowel(s rune) bool {
-	vowels := []rune{'A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u'}
+func isVowel(s byte) bool {
+	vowels := []byte{'A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u'}
 
 	return slices.Contains(vowels, s)
 }

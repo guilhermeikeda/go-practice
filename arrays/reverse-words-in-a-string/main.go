@@ -1,44 +1,62 @@
 package main
 
-import "strings"
-
 func main() {
 
 }
 
 func reverseWords(s string) string {
-	var words []string
+	// Convert to []byte for in-place mutation
+	b := []byte(s)
+	b = cleanSpaces(b)      // Step 1: remove extra spaces
+	reverse(b, 0, len(b)-1) // Step 2: reverse the entire slice
 
-	var word []string
-	for i := len(s) - 1; i >= 0; i-- {
-		if !isWhitespace(string(s[i])) {
-			word = append(word, string(s[i]))
-		}
-
-		if (isWhitespace(string(s[i])) || i == 0) && len(word) > 0 {
-			words = append(words, reverse(strings.Join(word, "")))
-			word = []string{}
+	// Step 3: reverse each word
+	start := 0
+	for i := 0; i <= len(b); i++ {
+		if i == len(b) || b[i] == ' ' {
+			reverse(b, start, i-1)
+			start = i + 1
 		}
 	}
-
-	return strings.Join(words, " ")
+	return string(b)
 }
 
-func isWhitespace(s string) bool {
-	return s == " "
+// Reverse helper
+func reverse(b []byte, left, right int) {
+	for left < right {
+		b[left], b[right] = b[right], b[left]
+		left++
+		right--
+	}
 }
 
-func reverse(s string) string {
-	i := 0
-	j := len(s) - 1
+// Remove leading/trailing/multiple spaces
+func cleanSpaces(b []byte) []byte {
+	n := len(b)
+	write := 0
+	read := 0
 
-	result := make([]string, len(s))
-	for i <= j {
-		result[i] = string(s[j])
-		result[j] = string(s[i])
-		i++
-		j--
+	// Skip leading spaces
+	for read < n && b[read] == ' ' {
+		read++
 	}
 
-	return strings.Join(result, "")
+	for read < n {
+		// Copy non-space chars
+		if b[read] != ' ' {
+			b[write] = b[read]
+			write++
+		} else if write > 0 && b[write-1] != ' ' {
+			// Keep one space between words
+			b[write] = ' '
+			write++
+		}
+		read++
+	}
+
+	// Remove trailing space
+	if write > 0 && b[write-1] == ' ' {
+		write--
+	}
+	return b[:write]
 }
