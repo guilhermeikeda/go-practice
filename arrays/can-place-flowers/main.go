@@ -1,7 +1,20 @@
 package main
 
-func main() {
+import "fmt"
 
+type Reader struct {
+	teste string
+}
+
+func (r *Reader) Close() {
+	r.teste = fmt.Sprintf("fechado: %s", r.teste)
+}
+
+func main() {
+	reader := &Reader{teste: "teste"}
+	fmt.Printf("%p\n", reader)
+	*reader = Reader{teste: "novo teste"}
+	fmt.Printf("%p\n", reader)
 }
 
 func canPlaceFlowers(flowerbed []int, n int) bool {
